@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# A variable for the IP address of the mosquitto container
+# broker="172.17.0.2"
+# A table containing the rooms
+declare -a salles=("E207" "E208" "C145" "C146")
+# A variable for the number of rooms
+nbSalles=$(echo ${#salles[@]})
+# A table containing the topics
+declare -a topics=("iut/E207" "iut/E208" "iut/C145" "iut/C146")
+# A variable for the number of topics
+nbTopics=$(echo ${#topics[@]})
+# a variable of an empty table
+declare -A valTemp
+# 2 variables for the minimum and maximum
+maxTemp=25
+minTemp=15
+
+# loop for, which feeds the table valTemp with the temperatures 
+for ((n=0;n<$nbSalles;n++))
+do
+	# RANDOM is a random number between 0 and 32767
+	# The remainders of the modulo by 11 are from 0 to 10
+	# By adding the minimum temperature, we make sure to have a temperature between 15 and 25
+    valTemp[${salles[$n]}]=$(($RANDOM%($maxTemp -$minTemp + 1) + $minTemp ))
+done
+
+# An infinite loop
+while true
+       do
+    for ((n=0;n<$nbSalles;n++))
+    do
+    	# A variable that stores the new temperature
+        newTemp=$(($RANDOM%($maxTemp -$minTemp + 1) + $minTemp ))
+		# Variable that stores the difference in temperatures between the new and old 
+        diffTemp=$(($newTemp - valTemp[${salles[$n]}]))
+        # We delete the '-'.
+        diffTemp2=$(echo $diffTemp | tr -d -) 
+        # As long as there is a difference of 2 degrees  
+        while [ $diffTemp2 -ge 2 ]
+        do
+        	# same process as above
+            newTemp=$(($RANDOM%($maxTemp -$minTemp + 1) + $minTemp ))      
+            diffTemp=$(($newTemp - valTemp[${salles[$n]}]))
+            diffTemp2=$(echo $diffTemp | tr -d -)       
+        done
+		# We fill in the temperature table 
+        valTemp[${salles[$n]}]=$newTemp
+
+    done
+	# loop for which allows to publish a message mqtt
+    for ((n=0;n<$nbTopics;n++))
+    do
+    	# A variable that stores the topic
+        topic=$(echo ${topics[$n]})
+        # A variable that stores the room, removing the front '\'
+        # -f 2 because the room is located in second position
+        room=$(echo $topic | cut -d "/" -f 2)
+        # A variable that retrieves the temperature associated with the room 
+        val=$(echo ${valTemp[$room]})
+        # We publish the message mqtt 
+        # mosquitto_pub -h $broker -t $topic -m "{\"room\":\"$room\",\"value\":$val}"
+        mosquitto_pub -t $topic -m "$val"
+        sleep 5
+    done
+    # Temperatures will be displayed every 60 seconds
+    sleep 2
+done

@@ -1,0 +1,69 @@
+#!/bin/bash
+
+#Infinite loop
+while true 
+do
+
+	#subscribing to the broker of the room E207
+	tempE207=$(mosquitto_sub -t 'iut/E207' -C 1)
+	#The date of the and the hour of the subscribtion 
+	date1=$(date +%F)
+	horraire1=$(date +%X)
+	#The name of the sensor 
+	Nom_captE207=$(echo "E207")
+	#A random number for the ID, until 0 32767
+	ID_MesE207=$RANDOM
+	
+
+	#subscribing to the broker of the room E208
+	tempE208=$(mosquitto_sub -t 'iut/E208' -C 1)
+	#The date of the and the hour of the subscribtion 
+	date2=$(date +%F)
+	horraire2=$(date +%X)
+	#The name of the sensor 
+	Nom_captE208=$(echo "E208")
+	#A random number for the ID, until 0 32767
+	ID_MesE208=$RANDOM
+	
+	
+	#subscribing to the broker of the room C145
+	tempC145=$(mosquitto_sub -t 'iut/C145' -C 1)
+	#The date of the and the hour of the subscribtion 
+	date3=$(date +%F)
+	horraire3=$(date +%X)
+	#The name of the sensor 
+	Nom_captC145=$(echo "C145")
+	#A random number for the ID, until 0 32767
+	ID_MesC145=$RANDOM
+
+	#subscribing to the broker of the room C146
+	tempC146=$(mosquitto_sub -t 'iut/C146' -C 1)
+	#The date of the and the hour of the subscribtion 
+	date4=$(date +%F)
+	horraire4=$(date +%X)
+	#The name of the sensor 
+	Nom_captC146=$(echo "C146")
+    #A random number for the ID, until 0 32767
+	ID_MesC146=$RANDOM
+	
+
+#Insert the data taken before to the database located on localhost 
+    
+	$(echo "INSERT INTO DBSAE23.Mesure (ID_Mes, Date, Horraire, Valeur, Nom_capt) VALUES ('$ID_MesE207', '$date1', '$horraire1', '$tempE207', '$Nom_captE207');" | /opt/lampp/bin/mysql -h localhost -u ccrespy -ppassroot)
+
+	$(echo "INSERT INTO DBSAE23.Mesure (ID_Mes, Date, Horraire, Valeur, Nom_capt) VALUES ('$ID_MesE208', '$date2', '$horraire2', '$tempE208', '$Nom_captE208');" | /opt/lampp/bin/mysql -h localhost -u ccrespy -ppassroot)
+
+	$(echo "INSERT INTO DBSAE23.Mesure (ID_Mes, Date, Horraire, Valeur, Nom_capt) VALUES ('$ID_MesC145', '$date3', '$horraire3', '$tempC145', '$Nom_captC145');" | /opt/lampp/bin/mysql -h localhost -u ccrespy -ppassroot)
+
+	$(echo "INSERT INTO DBSAE23.Mesure (ID_Mes, Date, Horraire, Valeur, Nom_capt) VALUES ('$ID_MesC146', '$date4', '$horraire4', '$tempC146', '$Nom_captC146');" | /opt/lampp/bin/mysql -h localhost -u ccrespy -ppassroot)
+
+done
+
+
+
+
+
+
+
+
+
