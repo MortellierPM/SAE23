@@ -1,0 +1,62 @@
+/* Feuille de style Exercice 4 */
+
+html    /* Style à appliquer sur l'ensemble du document */
+{ 
+  margin: 0;
+  padding: 0;
+  background: url(../images/fond_rt.jpg) no-repeat center fixed; 
+  background-size: cover; /* version standardisée */
+}
+
+body   /* Style à appliquer sur l'ensemble du corps du document */
+{
+  margin-right: 5%;             /* Gestion des marges latérales */
+  margin-left: 5%;
+  color: white;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+h1    /* Style à appliquer sur les titres h1 */
+{
+  background-color: rgba(255,255,255,0.75); 
+  text-align: left;
+  letter-spacing: 0.5em;
+}
+
+.gauche
+{
+  position: relative;
+  float: left;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+section
+{
+  margin-top: 25px;
+  font-size: 1.1em;
+}
+
+form
+{
+  width: 50%;
+  font-family: Arial, sans-serif;
+}
+
+p.erreur
+{
+  padding-top: 15px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+}
+
+nav
+{
+  font-family: Arial, sans-serif;
+  background-color: rgba(255,255,255,0.75); 
+}
+
+li
+{
+  padding: 10px; 
+}
