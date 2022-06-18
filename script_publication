@@ -63,6 +63,6 @@ while true
         mosquitto_pub -t $topic -m "$val"
         sleep 5
     done
-    # Temperatures will be displayed every 60 seconds
-    sleep 2
+    # Temperatures will be displayed every 30 seconds
+    sleep 30
 done
